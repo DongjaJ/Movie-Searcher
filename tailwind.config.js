@@ -15,6 +15,9 @@ export default {
         vite: '0 0 2rem #646cffaa',
         vue: '0 0 2rem #42b883aa',
       },
+      fontFamily: {
+        Pretendard: ["Pretendard"],
+      },
     },
   },
   plugins: [],
