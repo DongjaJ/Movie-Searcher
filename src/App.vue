@@ -1,9 +1,15 @@
-<script setup lang="ts"></script>
+<script lang="ts">
+  import NavBar from './components/NavBar.vue'
+
+  export default {
+    name:'App',
+    components:{NavBar}
+  }
+
+</script>
 
 <template>
-  <header>
-    헤더
-  </header>
+  <NavBar/>
   <RouterView/>
 </template>
 

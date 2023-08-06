@@ -10,5 +10,13 @@
 }
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: Pretendard-Regular, sans-serif;
+}
+
+body{
+  @apply flex flex-col items-center;
+}
+
+#app {
+  @apply w-full max-w-screen-2xl;
 }
