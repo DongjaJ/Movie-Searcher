@@ -8,7 +8,7 @@ export default defineConfig({
   resolve:{
     resolve: {
       alias: [
-        {find:'@',replacement: resolve(__dirname, './src')},
+        {find:'@',replacement: resolve(__dirname, '/src')},
     ]
     },
   },
