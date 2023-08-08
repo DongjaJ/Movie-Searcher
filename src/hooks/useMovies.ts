@@ -12,7 +12,6 @@ async function getMovies() {
     },
   });
   const response = await axiosInstance.get('', { params: { s: 'frozen' } });
-  console.log(response);
   return response.data;
 }
 

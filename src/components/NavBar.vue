@@ -1,4 +1,25 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+
+const router = useRouter();
+const route = useRoute();
+const keyword = ref(route.params.keyword ?? '');
+
+function handleSubmit() {
+  const trimedKeyword = keyword.value.trim();
+  const isEmptyKeyword = trimedKeyword.length === 0;
+  if (isEmptyKeyword) {
+    return;
+  }
+
+  router.push({ name: 'Movies', params: { keyword: trimedKeyword } });
+}
+
+function handleInput({ target }) {
+  keyword.value = target.value;
+}
+</script>
 
 <template>
   <header class="flex w-full text-2xl p-4 items-center">
@@ -6,10 +27,14 @@
       <i class="fa-solid fa-video text-4xl"></i>
       <h1 class="font-bold text-3xl ml-2">Movies</h1>
     </div>
-    <form class="flex justify-center w-full">
+    <form
+      class="flex justify-center w-full"
+      @submit.prevent="handleSubmit">
       <input
         class="w-7/12 p-3 pl-5 bg-black text-light-vite outline-none border-s rounded-s-lg placeholder:text-zinc-400"
-        placeholder="Search..." />
+        placeholder="Search..."
+        :value="keyword"
+        @input="handleInput" />
       <button class="bg-normal-vite px-4 text-zinc-100 border-e rounded-e-lg">
         <i class="fa-solid fa-magnifying-glass"></i>
       </button>
