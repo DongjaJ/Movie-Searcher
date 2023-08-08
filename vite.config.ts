@@ -1,16 +1,13 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import tsconfigPaths from 'vite-tsconfig-paths'
-import {resolve} from 'path'
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  resolve:{
+  resolve: {
     resolve: {
-      alias: [
-        {find:'@',replacement: resolve(__dirname, '/src')},
-    ]
+      alias: [{ find: '@', replacement: '/src' }],
     },
   },
   plugins: [vue(), tsconfigPaths()],
-})
+});

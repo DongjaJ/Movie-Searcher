@@ -16,7 +16,10 @@ export default {
         vue: '0 0 2rem #42b883aa',
       },
       fontFamily: {
-        Pretendard: ["Pretendard"],
+        Pretendard: ['Pretendard'],
+      },
+      backgroundImage: {
+        banner: `url('/images/banner.jpg')`,
       },
     },
   },
