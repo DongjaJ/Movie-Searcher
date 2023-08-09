@@ -21,6 +21,10 @@ export default {
       backgroundImage: {
         banner: `url('/images/banner.jpg')`,
       },
+      sepia: {
+        25: '.25',
+        75: '.75',
+      },
     },
   },
   plugins: [],
