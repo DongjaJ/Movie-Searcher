@@ -14,6 +14,6 @@ export default class MovieClient {
   }
 
   async getData(params) {
-    return this.httpClient.get('', params);
+    return this.httpClient.get('', { params });
   }
 }

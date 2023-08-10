@@ -6,7 +6,7 @@ const router = useRouter();
 const route = useRoute();
 const keyword = ref(route.params.keyword ?? '');
 
-function handleSubmit() {
+function handleSubmit():void {
   const trimedKeyword = keyword.value.trim();
   const isEmptyKeyword = trimedKeyword.length === 0;
   if (isEmptyKeyword) {
@@ -16,17 +16,19 @@ function handleSubmit() {
   router.push({ name: 'Movies', params: { keyword: trimedKeyword } });
 }
 
-function handleInput({ target }) {
-  keyword.value = target.value;
+function handleInput({target}:InputEvent):void {
+  keyword.value = (target as HTMLInputElement).value;
 }
 </script>
 
 <template>
   <header class="flex w-full text-2xl p-4 items-center">
-    <div class="flex items-center gap-2 text-normal-vite">
-      <i class="fa-solid fa-video text-4xl"></i>
-      <h1 class="font-bold text-3xl ml-2">Movies</h1>
-    </div>
+    <RouterLink to='/'>
+      <div class="flex items-center gap-2 text-normal-vite">
+        <i class="fa-solid fa-video text-4xl"></i>
+        <h1 class="font-bold text-3xl ml-2">Movies</h1>
+      </div>
+    </RouterLink>
     <form
       class="flex justify-center w-full"
       @submit.prevent="handleSubmit">

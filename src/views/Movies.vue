@@ -1,6 +1,6 @@
 <template>
   <p
-    v-if="isLoading"
+    v-if="isLoading || isFetching"
     class="text-zinc-100">
     loading...
   </p>
@@ -21,7 +21,7 @@
 
 <script setup lang="ts">
 import MovieCard from '../components/MovieCard.vue';
-import { useQuery, useQueryClient } from 'vue-query';
+import { useQuery, useQueryClient } from '@tanstack/vue-query';
 import axios, { Axios } from 'axios';
 import { useRoute } from 'vue-router';
 import { ref, watch } from 'vue';
@@ -45,22 +45,22 @@ async function getMovies(keyword) {
 function useMovies() {
   const { keyword } = route.params;
   const keywordRef = ref(keyword);
-  const { data, isLoading, error } = useQuery(
+  const { data, isLoading, error, isFetching } = useQuery(
     ['movies', keywordRef.value],
     () => getMovies(keywordRef.value),
   );
 
   watch(
     () => route.params.keyword,
-    (newKeyword) => {
+    (newKeyword:string) => {
       keywordRef.value = newKeyword;
       queryClient.invalidateQueries('movies');
     },
     { immediate: false },
   );
 
-  return { movies: data, isLoading, error };
+  return { movies: data, isLoading, error, isFetching };
 }
 
-const { movies, isLoading, error } = useMovies();
+const { movies, isLoading, error, isFetching } = useMovies();
 </script>

@@ -2,7 +2,7 @@ import { createApp } from 'vue';
 import './style.css';
 import App from './App.vue';
 import router from './router/index';
-import { VueQueryPlugin, VueQueryPluginOptions } from 'vue-query';
+import { VueQueryPlugin, VueQueryPluginOptions } from '@tanstack/vue-query';
 
 const vueQueryPluginOptions: VueQueryPluginOptions = {
   queryClientConfig: {

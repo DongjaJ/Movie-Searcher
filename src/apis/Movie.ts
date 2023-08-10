@@ -75,11 +75,11 @@ interface apiClient {
 export default class Movie {
   constructor(private apiClient: apiClient) {}
 
-  async search({ keyword, releaseYear, page = 1 }: searchParams) {
+  async search({ keyword, releaseYear, page }: searchParams) {
     return this.apiClient.getData({ s: keyword, y: releaseYear, p: page });
   }
 
-  async getMovieDetail({ movieId, plot = 'short' }: movieDetailParams) {
+  async getMovieDetail({ movieId, plot }: movieDetailParams) {
     return this.apiClient.getData({ i: movieId, plot });
   }
 }
