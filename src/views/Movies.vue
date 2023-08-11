@@ -39,6 +39,7 @@ async function getMovies(keyword) {
     },
   });
   const response = await axiosInstance.get('', { params: { s: keyword } });
+  console.log(response.data);
   return response.data;
 }
 
@@ -52,7 +53,7 @@ function useMovies() {
 
   watch(
     () => route.params.keyword,
-    (newKeyword:string) => {
+    (newKeyword: string) => {
       keywordRef.value = newKeyword;
       queryClient.invalidateQueries('movies');
     },
