@@ -20,7 +20,7 @@ function handleClick() {
 
 <template>
   <li
-    class="text-zinc-100 sepia hover:sepia-0 hover:-translate-y-2 hover:scale-105 ease-in-out duration-300 cursor-pointer"
+    class="text-zinc-100 sepia hover:sepia-0 hover:-translate-y-2 hover:scale-105 ease-in-out duration-300 cursor-pointer shadow-lg shadow-neutral-400"
     @click="handleClick">
     <img
       :src="

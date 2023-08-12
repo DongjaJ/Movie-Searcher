@@ -1,19 +1,18 @@
 <script setup lang="ts">
-import { useQuery, useQueryClient } from '@tanstack/vue-query';
+import { useQuery } from '@tanstack/vue-query';
 import { useRoute } from 'vue-router';
 import { ref, watch } from 'vue';
 import { DoughnutChart } from 'vue-chart-3';
 import { Chart, registerables } from 'chart.js';
 import { computed } from 'vue';
 import searcher from '../apis';
-
-const route = useRoute();
-const queryClient = useQueryClient();
+import Loader from '../components/Loader.vue';
 
 function useMovieDetail() {
+  const route = useRoute();
   const { movieId } = route.params;
   const movieIdRef = ref(movieId);
-  const { data, isLoading, error, isFetching } = useQuery(
+  const { data, isLoading, error, isFetching, refetch } = useQuery(
     ['movieDetail', movieIdRef.value],
     () => searcher.getMovieDetail({ movieId: movieIdRef.value as string }),
   );
@@ -22,15 +21,15 @@ function useMovieDetail() {
     () => route.params.movieId,
     (movieId) => {
       movieIdRef.value = movieId;
-      queryClient.invalidateQueries(['movieDetail']);
+      refetch();
     },
-    { immediate: false },
+    { immediate: true },
   );
 
   return { movieDetail: data, isLoading, error, isFetching };
 }
 
-const { movieDetail, isLoading, error, isFetching } = useMovieDetail();
+let { movieDetail, isLoading, error, isFetching } = useMovieDetail();
 
 Chart.register(...registerables);
 
@@ -68,11 +67,7 @@ const metacritic = {
 </script>
 
 <template>
-  <p
-    v-if="isLoading || isFetching"
-    class="text-zinc-100">
-    loading...
-  </p>
+  <Loader v-if="isLoading || isFetching" />
   <p
     v-else-if="error"
     class="text-zinc-100">
