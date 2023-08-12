@@ -22,33 +22,19 @@
 <script setup lang="ts">
 import MovieCard from '../components/MovieCard.vue';
 import { useQuery, useQueryClient } from '@tanstack/vue-query';
-import axios, { Axios } from 'axios';
 import { useRoute } from 'vue-router';
 import { ref, watch } from 'vue';
+import searcher from '../apis';
 
 const route = useRoute();
 const queryClient = useQueryClient();
-
-const API_END_POINT = 'https://omdbapi.com';
-
-async function getMovies(keyword) {
-  const axiosInstance: Axios = axios.create({
-    baseURL: API_END_POINT,
-    params: {
-      apikey: import.meta.env.VITE_API_KEY,
-    },
-  });
-  const response = await axiosInstance.get('', { params: { s: keyword } });
-  console.log(response.data);
-  return response.data;
-}
 
 function useMovies() {
   const { keyword } = route.params;
   const keywordRef = ref(keyword);
   const { data, isLoading, error, isFetching } = useQuery(
     ['movies', keywordRef.value],
-    () => getMovies(keywordRef.value),
+    () => searcher.search({ keyword: keywordRef.value }),
   );
 
   watch(

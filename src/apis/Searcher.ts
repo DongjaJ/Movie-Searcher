@@ -1,23 +1,7 @@
-interface searchParams {
+interface SearchParams {
   keyword: string;
   releaseYear?: number;
-  page: number;
-}
-
-interface movieDetailParams {
-  movieId: string;
-  plot: string;
-}
-
-interface requestSearchParams {
-  s: string;
-  y: number;
-  p: number;
-}
-
-interface requestDetailParams {
-  i: string;
-  plot: string;
+  page?: number;
 }
 
 interface SearchResponse {
@@ -64,22 +48,27 @@ interface DetailResponse {
   Response: string;
 }
 
-interface IgetData<T extends SearchResponse | DetailResponse> {
-  (params: requestSearchParams | requestDetailParams): Promise<T>;
+interface IgetMovies {
+  ({ keyword }: SearchParams): Promise<SearchResponse>;
+}
+
+interface IgetMovieDetail {
+  ({ movieId }: { movieId: string }): Promise<DetailResponse>;
 }
 
 interface apiClient {
-  getData: IgetData<SearchResponse | DetailResponse>;
+  getMovies: IgetMovies;
+  getMovieDetail: IgetMovieDetail;
 }
 
 export default class Movie {
   constructor(private apiClient: apiClient) {}
 
-  async search({ keyword, releaseYear, page }: searchParams) {
-    return this.apiClient.getData({ s: keyword, y: releaseYear, p: page });
+  async search({ keyword }: SearchParams) {
+    return this.apiClient.getMovies({ keyword });
   }
 
-  async getMovieDetail({ movieId, plot }: movieDetailParams) {
-    return this.apiClient.getData({ i: movieId, plot });
+  async getMovieDetail({ movieId }: { movieId: string }) {
+    return this.apiClient.getMovieDetail({ movieId });
   }
 }

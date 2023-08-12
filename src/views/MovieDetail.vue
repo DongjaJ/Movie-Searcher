@@ -1,43 +1,28 @@
 <script setup lang="ts">
 import { useQuery, useQueryClient } from '@tanstack/vue-query';
-import axios, { Axios } from 'axios';
 import { useRoute } from 'vue-router';
 import { ref, watch } from 'vue';
 import { DoughnutChart } from 'vue-chart-3';
 import { Chart, registerables } from 'chart.js';
 import { computed } from 'vue';
+import searcher from '../apis';
 
 const route = useRoute();
 const queryClient = useQueryClient();
-
-const API_END_POINT = 'https://omdbapi.com';
-
-async function getMovieDetail(movieId) {
-  const axiosInstance: Axios = axios.create({
-    baseURL: API_END_POINT,
-    params: {
-      apikey: import.meta.env.VITE_API_KEY,
-    },
-  });
-  const response = await axiosInstance.get('', {
-    params: { i: movieId, plot: 'full' },
-  });
-  return response.data;
-}
 
 function useMovieDetail() {
   const { movieId } = route.params;
   const movieIdRef = ref(movieId);
   const { data, isLoading, error, isFetching } = useQuery(
     ['movieDetail', movieIdRef.value],
-    () => getMovieDetail(movieIdRef.value),
+    () => searcher.getMovieDetail({ movieId: movieIdRef.value as string }),
   );
 
   watch(
     () => route.params.movieId,
-    (newMovieId: string) => {
-      movieIdRef.value = newMovieId;
-      queryClient.invalidateQueries('movieDetail');
+    (movieId) => {
+      movieIdRef.value = movieId;
+      queryClient.invalidateQueries(['movieDetail']);
     },
     { immediate: false },
   );
@@ -124,7 +109,9 @@ const metacritic = {
           <p>{{ movieDetail.Country }}</p>
           <p>{{ movieDetail.Runtime }}</p>
           <p>released: {{ movieDetail.Released }}</p>
-          <p class="line-clamp-3">{{ movieDetail.Plot }}</p>
+          <p class="line-clamp-3 pl-2 border-l-4 border-zinc-400">
+            {{ movieDetail.Plot }}
+          </p>
           <p>rating: {{ movieDetail.imdbRating }}</p>
           <p>boxOffice: {{ movieDetail.BoxOffice }}</p>
         </section>
