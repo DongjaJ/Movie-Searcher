@@ -3,6 +3,9 @@ import { useQuery, useQueryClient } from '@tanstack/vue-query';
 import axios, { Axios } from 'axios';
 import { useRoute } from 'vue-router';
 import { ref, watch } from 'vue';
+import { DoughnutChart } from 'vue-chart-3';
+import { Chart, registerables } from 'chart.js';
+import { computed } from 'vue';
 
 const route = useRoute();
 const queryClient = useQueryClient();
@@ -43,6 +46,40 @@ function useMovieDetail() {
 }
 
 const { movieDetail, isLoading, error, isFetching } = useMovieDetail();
+
+Chart.register(...registerables);
+
+//imdb, rotten tamato, metacritic
+
+const imdb = {
+  datasets: [
+    {
+      data: [95, 5],
+      backgroundColor: ['#f6c518', '#121212'],
+    },
+  ],
+  options: {
+    responsive: true,
+  },
+};
+
+const rottenTamato = computed(() => ({
+  datasets: [
+    {
+      data: [95, 5],
+      backgroundColor: ['#f83206', '#ffffff'],
+    },
+  ],
+}));
+
+const metacritic = {
+  datasets: [
+    {
+      data: [95, 5],
+      backgroundColor: ['#ffcd31', '#111111'],
+    },
+  ],
+};
 </script>
 
 <template>
@@ -58,50 +95,63 @@ const { movieDetail, isLoading, error, isFetching } = useMovieDetail();
   </p>
   <section
     v-else
-    class="text-zinc-100">
-    <h2>{{ movieDetail.Title }}</h2>
-    <div class="flex">
-      <p>{{ movieDetail.Type }}</p>
-      <p>{{ movieDetail.Year }}</p>
+    class="text-zinc-200 p-4 px-16">
+    <h2 class="text-4xl px-4">
+      {{ movieDetail.Title }}
+    </h2>
+    <div class="flex text-2xl gap px-4">
+      <p class="after:content-['·'] after:mx-2 after:text-zinc-500">
+        {{ movieDetail.Type }}
+      </p>
+      <p class="after:content-['·'] after:mx-2 after:text-zinc-500">
+        {{ movieDetail.Year }}
+      </p>
       <p>{{ movieDetail.Rated }}</p>
     </div>
-    <section class="basic-infromation">
-      <h3>기본 정보</h3>
-      <div class="flex">
+    <section class="bg-zinc-100 text-black my-2 rounded-2xl p-4">
+      <div class="flex gap-4 overflow-hidden border-b p-2">
         <img
           :src="
             movieDetail.Poster !== 'N/A'
               ? movieDetail.Poster.replace('SX300', 'SX700')
               : movieDetail.Poster
           "
-          :alt="movieDetail.Title" />
-        <div>
+          :alt="movieDetail.Title"
+          class="w-full basis-7/12 h-96 rounded-2xl" />
+        <section>
+          <h3 class="text-3xl font-bold mb-2">Basic Information</h3>
           <p>outline: {{ movieDetail.Genre }}</p>
           <p>{{ movieDetail.Country }}</p>
           <p>{{ movieDetail.Runtime }}</p>
           <p>released: {{ movieDetail.Released }}</p>
-          <p>{{ movieDetail.Plot }}</p>
+          <p class="line-clamp-3">{{ movieDetail.Plot }}</p>
           <p>rating: {{ movieDetail.imdbRating }}</p>
           <p>boxOffice: {{ movieDetail.BoxOffice }}</p>
-        </div>
+        </section>
       </div>
-    </section>
-    <section class="director-and-actors">
-      <h3>감독 및 출연</h3>
-      <p>감독: {{ movieDetail.Director }}</p>
-      <p>작가: {{ movieDetail.Writer }}</p>
-      <p>배우: {{ movieDetail.Actors }}</p>
-    </section>
-    <section class="rating">
-      <h3>평점</h3>
-      <ul>
-        <li
-          v-for="rating in movieDetail.Ratings"
-          :key="rating.Source">
-          <p>{{ rating.Source }}</p>
-          <p>{{ rating.Value }}</p>
-        </li>
-      </ul>
+      <section class="border-b p-2">
+        <h3 class="text-3xl font-bold mb-2">Directing and Appearing</h3>
+        <p>Derectors: {{ movieDetail.Director }}</p>
+        <p>Writers: {{ movieDetail.Writer }}</p>
+        <p>Actors: {{ movieDetail.Actors }}</p>
+      </section>
+
+      <section class="p-2">
+        <h3 class="text-3xl font-bold mb-2">Rating</h3>
+        <ul class="flex justify-around">
+          <li
+            v-for="rating in movieDetail.Ratings"
+            :key="rating.Source">
+            <p>{{ rating.Source }}</p>
+            <p>{{ rating.Value }}</p>
+          </li>
+        </ul>
+        <div class="flex justify-between">
+          <DoughnutChart :chart-data="imdb" />
+          <DoughnutChart :chart-data="rottenTamato" />
+          <DoughnutChart :chart-data="metacritic" />
+        </div>
+      </section>
     </section>
   </section>
 </template>
