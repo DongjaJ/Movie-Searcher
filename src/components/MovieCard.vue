@@ -23,7 +23,11 @@ function handleClick() {
     class="text-zinc-100 sepia hover:sepia-0 hover:-translate-y-2 hover:scale-105 ease-in-out duration-300 cursor-pointer"
     @click="handleClick">
     <img
-      :src="movie.Poster"
+      :src="
+        movie.Poster !== 'N/A'
+          ? movie.Poster.replace('SX300', 'SX700')
+          : movie.Poster
+      "
       class="w-full rounded-md"
       alt="" />
     <h4 class="mb-2 font-bold text-xl">{{ movie.Title }}</h4>

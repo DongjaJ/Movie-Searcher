@@ -69,7 +69,11 @@ const { movieDetail, isLoading, error, isFetching } = useMovieDetail();
       <h3>기본 정보</h3>
       <div class="flex">
         <img
-          :src="movieDetail.Poster"
+          :src="
+            movieDetail.Poster !== 'N/A'
+              ? movieDetail.Poster.replace('SX300', 'SX700')
+              : movieDetail.Poster
+          "
           :alt="movieDetail.Title" />
         <div>
           <p>outline: {{ movieDetail.Genre }}</p>
