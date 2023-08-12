@@ -1,6 +1,6 @@
 import axios, { Axios } from 'axios';
 
-interface Movie {
+export interface Movie {
   Title: string;
   Year: string;
   imdbID: string;
@@ -8,7 +8,7 @@ interface Movie {
   Poster: string;
 }
 
-interface DetailResponse {
+export interface DetailResponse {
   Title: string;
   Year: string;
   Rated: string;
@@ -39,18 +39,21 @@ interface DetailResponse {
   Response: string;
 }
 
-export default class MovieClient {
+const API_END_POINT = 'https://omdbapi.com';
+
+class MovieClient {
   private httpClient: Axios;
   constructor() {
     this.httpClient = axios.create({
-      baseURL: '/api',
+      baseURL: API_END_POINT,
+      params: {
+        apikey: process.env.VITE_API_KEY,
+      },
     });
   }
 
-  async getMovies({ keyword }: { keyword: string }) {
-    const response = await this.httpClient.get('/movies', {
-      params: { keyword },
-    });
+  async getMovies(keyword: string) {
+    const response = await this.httpClient.get('', { params: { s: keyword } });
     return response.data;
   }
 
@@ -59,9 +62,13 @@ export default class MovieClient {
   }: {
     movieId: string;
   }): Promise<DetailResponse> {
-    const response = await this.httpClient.get('/detail', {
-      params: { movieId },
+    const response = await this.httpClient.get('', {
+      params: { i: movieId, plot: 'full' },
     });
     return response.data;
   }
 }
+
+const movieClient = new MovieClient();
+
+export default movieClient;
