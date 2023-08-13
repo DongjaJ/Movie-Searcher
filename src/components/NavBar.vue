@@ -7,7 +7,7 @@ const route = useRoute();
 const keyword = ref(route.params.keyword ?? '');
 
 function handleSubmit(): void {
-  const trimedKeyword = keyword.value.trim();
+  const trimedKeyword = (keyword.value as string).trim();
   const isEmptyKeyword = trimedKeyword.length === 0;
   if (isEmptyKeyword) {
     return;
@@ -16,8 +16,9 @@ function handleSubmit(): void {
   router.push({ name: 'Movies', params: { keyword: trimedKeyword } });
 }
 
-function handleInput({ target }: InputEvent): void {
-  keyword.value = (target as HTMLInputElement).value;
+function handleInput(event: Event): void {
+  const { value } = event.target as HTMLInputElement;
+  keyword.value = value;
 }
 
 watch(

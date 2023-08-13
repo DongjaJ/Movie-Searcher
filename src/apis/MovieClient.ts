@@ -1,13 +1,5 @@
 import axios, { Axios } from 'axios';
 
-interface Movie {
-  Title: string;
-  Year: string;
-  imdbID: string;
-  Type: string;
-  Poster: string;
-}
-
 interface DetailResponse {
   Title: string;
   Year: string;

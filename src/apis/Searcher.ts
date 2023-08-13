@@ -1,20 +1,9 @@
+import { ResponseValue } from '@/views/Movies.vue';
+
 interface SearchParams {
   keyword: string;
   releaseYear?: number;
   page?: number;
-}
-
-interface SearchResponse {
-  Search: Search;
-  totalResults: string;
-  Response: string;
-}
-interface Search {
-  Title: string;
-  Year: string;
-  imdbID: string;
-  Type: string;
-  Poster: string;
 }
 
 interface DetailResponse {
@@ -49,7 +38,7 @@ interface DetailResponse {
 }
 
 interface IgetMovies {
-  ({ keyword }: SearchParams): Promise<SearchResponse>;
+  ({ keyword }: SearchParams): Promise<ResponseValue>;
 }
 
 interface IgetMovieDetail {

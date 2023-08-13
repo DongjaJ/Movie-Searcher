@@ -8,14 +8,45 @@ import { computed } from 'vue';
 import searcher from '../apis';
 import Loader from '../components/Loader.vue';
 
+interface ResponseValue {
+  Title: string;
+  Year: string;
+  Rated: string;
+  Released: string;
+  Runtime: string;
+  Genre: string;
+  Director: string;
+  Writer: string;
+  Actors: string;
+  Plot: string;
+  Language: string;
+  Country: string;
+  Awards: string;
+  Poster: string;
+  Ratings: {
+    Source: string;
+    Value: string;
+  }[];
+  Metascore: string;
+  imdbRating: string;
+  imdbVotes: string;
+  imdbID: string;
+  Type: string;
+  DVD: string;
+  BoxOffice: string;
+  Production: string;
+  Website: string;
+  Response: string;
+}
+
 function useMovieDetail() {
   const route = useRoute();
   const { movieId } = route.params;
   const movieIdRef = ref(movieId);
-  const { data, isLoading, error, isFetching, refetch } = useQuery(
-    ['movieDetail', movieIdRef.value],
-    () => searcher.getMovieDetail({ movieId: movieIdRef.value as string }),
-  );
+  const { data, isLoading, isError, isFetching, refetch } =
+    useQuery<ResponseValue>(['movieDetail', movieIdRef.value], () =>
+      searcher.getMovieDetail({ movieId: movieIdRef.value as string }),
+    );
 
   watch(
     () => route.params.movieId,
@@ -26,10 +57,10 @@ function useMovieDetail() {
     { immediate: true },
   );
 
-  return { movieDetail: data, isLoading, error, isFetching };
+  return { movieDetail: data, isLoading, isError, isFetching };
 }
 
-let { movieDetail, isLoading, error, isFetching } = useMovieDetail();
+let { movieDetail, isLoading, isError, isFetching } = useMovieDetail();
 
 Chart.register(...registerables);
 
@@ -69,12 +100,12 @@ const metacritic = {
 <template>
   <Loader v-if="isLoading || isFetching" />
   <p
-    v-else-if="error"
+    v-else-if="isError"
     class="text-zinc-100">
-    {{ error.message }}
+    error...
   </p>
   <section
-    v-else
+    v-else-if="movieDetail"
     class="text-zinc-200 p-4 px-16">
     <h2 class="text-4xl px-4">
       {{ movieDetail.Title }}
