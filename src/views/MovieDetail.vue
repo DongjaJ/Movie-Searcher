@@ -34,12 +34,6 @@ const isFullPlot = ref(false);
 function togglePlot() {
   isFullPlot.value = !isFullPlot.value;
 }
-
-const ImageUrl = {
-  'Internet Movie Database': '/images/imdb.svg',
-  'Rotten Tomatoes': '/images/rottenTomato.svg',
-  Metacritic: '/images/metacritic.svg',
-};
 </script>
 
 <template>

@@ -36,7 +36,6 @@ watch(
       <div
         class="flex items-center gap-2 text-brand after:content-[''] md:after:content-['Movies'] after:ml-2 after:font-bold after:text-3xl">
         <i class="fa-solid fa-video text-4xl"></i>
-        <!-- <h1 class="font-bold text-3xl ml-2">Movies</h1> -->
       </div>
     </RouterLink>
     <form
