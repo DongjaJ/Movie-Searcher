@@ -4,10 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "concurrently yarn:watch-*",
+    "watch-vite":"vite",
+    "watch-vercel": "vercel dev",
     "build": "vue-tsc && vite build",
-    "preview": "vite preview",
-    "vercel": "vercel dev"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@tanstack/vue-query": "^4.32.6",
@@ -24,6 +25,7 @@
     "@typescript-eslint/parser": "^6.2.1",
     "@vitejs/plugin-vue": "^4.2.3",
     "autoprefixer": "^10.4.14",
+    "concurrently": "^8.2.0",
     "eslint": "^8.46.0",
     "eslint-config-prettier": "^8.9.0",
     "eslint-plugin-prettier": "^5.0.0",

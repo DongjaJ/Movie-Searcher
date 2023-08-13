@@ -3,27 +3,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        'dark-vite': '#535bf2',
-        'normal-vite': '#646cff',
-        'light-vite': '#747bff',
-        'vue-green': '#41B883',
-        'vue-light-green': '#4dc08d',
-        'vue-dark-green': '#344a5e',
-        gray: '#888',
-      },
-      dropShadow: {
-        vite: '0 0 2rem #646cffaa',
-        vue: '0 0 2rem #42b883aa',
-      },
-      fontFamily: {
-        Pretendard: ['Pretendard'],
+        brand: '#646cff',
       },
       backgroundImage: {
         banner: `url('/images/banner.jpg')`,
-      },
-      sepia: {
-        25: '.25',
-        75: '.75',
+        InternetMovieDatabase: `url('/images/imdb.svg')`,
+        RottenTomatoes: `url('/images/rottenTomato.svg')`,
+        Metacritic: `url('/images/metacritic.svg')`,
       },
     },
   },

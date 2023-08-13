@@ -1,48 +1,12 @@
-import { ResponseValue } from '@/views/Movies.vue';
-
-interface SearchParams {
-  keyword: string;
-  releaseYear?: number;
-  page?: number;
-}
-
-interface DetailResponse {
-  Title: string;
-  Year: string;
-  Rated: string;
-  Released: string;
-  Runtime: string;
-  Genre: string;
-  Director: string;
-  Writer: string;
-  Actors: string;
-  Plot: string;
-  Language: string;
-  Country: string;
-  Awards: string;
-  Poster: string;
-  Ratings: {
-    Source: string;
-    Value: string;
-  }[];
-  Metascore: string;
-  imdbRating: string;
-  imdbVotes: string;
-  imdbID: string;
-  Type: string;
-  DVD: string;
-  BoxOffice: string;
-  Production: string;
-  Website: string;
-  Response: string;
-}
+import { IMovieDetailResponse } from '@/interface/movieDetail';
+import { IMovieResponse, SearchParams } from '@/interface/movies';
 
 interface IgetMovies {
-  ({ keyword }: SearchParams): Promise<ResponseValue>;
+  ({ keyword }: SearchParams): Promise<IMovieResponse>;
 }
 
 interface IgetMovieDetail {
-  ({ movieId }: { movieId: string }): Promise<DetailResponse>;
+  ({ movieId }: { movieId: string }): Promise<IMovieDetailResponse>;
 }
 
 interface apiClient {
@@ -53,8 +17,8 @@ interface apiClient {
 export default class Movie {
   constructor(private apiClient: apiClient) {}
 
-  async search({ keyword }: SearchParams) {
-    return this.apiClient.getMovies({ keyword });
+  async search({ keyword, page }: SearchParams) {
+    return this.apiClient.getMovies({ keyword, page });
   }
 
   async getMovieDetail({ movieId }: { movieId: string }) {

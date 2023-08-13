@@ -1,5 +1,5 @@
 <template>
-  <div class="loader text-normal-vite" />
+  <div class="loader text-brand" />
 </template>
 
 <script setup lang="ts"></script>
@@ -13,7 +13,7 @@
 .loader {
   font-size: 11px;
   text-indent: -99999em;
-  margin: 55px auto;
+  margin: 250px auto;
   position: relative;
   width: 10em;
   height: 10em;

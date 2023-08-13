@@ -1,35 +1,6 @@
+import { IMovieDetailResponse } from '@/interface/movieDetail';
+import { SearchParams } from '@/interface/movies';
 import axios, { Axios } from 'axios';
-
-interface DetailResponse {
-  Title: string;
-  Year: string;
-  Rated: string;
-  Released: string;
-  Runtime: string;
-  Genre: string;
-  Director: string;
-  Writer: string;
-  Actors: string;
-  Plot: string;
-  Language: string;
-  Country: string;
-  Awards: string;
-  Poster: string;
-  Ratings: {
-    Source: string;
-    Value: string;
-  }[];
-  Metascore: string;
-  imdbRating: string;
-  imdbVotes: string;
-  imdbID: string;
-  Type: string;
-  DVD: string;
-  BoxOffice: string;
-  Production: string;
-  Website: string;
-  Response: string;
-}
 
 export default class MovieClient {
   private httpClient: Axios;
@@ -39,9 +10,9 @@ export default class MovieClient {
     });
   }
 
-  async getMovies({ keyword }: { keyword: string }) {
+  async getMovies({ keyword, page }: SearchParams) {
     const response = await this.httpClient.get('/movies', {
-      params: { keyword },
+      params: { keyword, page },
     });
     return response.data;
   }
@@ -50,7 +21,7 @@ export default class MovieClient {
     movieId,
   }: {
     movieId: string;
-  }): Promise<DetailResponse> {
+  }): Promise<IMovieDetailResponse> {
     const response = await this.httpClient.get('/detail', {
       params: { movieId },
     });

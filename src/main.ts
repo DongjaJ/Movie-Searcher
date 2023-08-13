@@ -6,7 +6,7 @@ import { VueQueryPlugin, VueQueryPluginOptions } from '@tanstack/vue-query';
 
 const vueQueryPluginOptions: VueQueryPluginOptions = {
   queryClientConfig: {
-    defaultOptions: { queries: { staleTime: 1000 * 60 * 5 } },
+    defaultOptions: { queries: { staleTime: 1000 * 60 * 10 } },
   },
 };
 

@@ -26,7 +26,7 @@ function handleClick() {
       :src="
         movie.Poster !== 'N/A'
           ? movie.Poster.replace('SX300', 'SX700')
-          : movie.Poster
+          : '/images/noImage.jpg'
       "
       class="w-full rounded-md"
       alt="" />

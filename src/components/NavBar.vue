@@ -13,7 +13,7 @@ function handleSubmit(): void {
     return;
   }
 
-  router.push({ name: 'Movies', params: { keyword: trimedKeyword } });
+  router.push({ name: 'Movies', params: { keyword: trimedKeyword, page: 1 } });
 }
 
 function handleInput(event: Event): void {
@@ -33,7 +33,7 @@ watch(
 <template>
   <header class="flex w-full text-2xl p-4 items-center">
     <RouterLink to="/">
-      <div class="flex items-center gap-2 text-normal-vite">
+      <div class="flex items-center gap-2 text-brand">
         <i class="fa-solid fa-video text-4xl"></i>
         <h1 class="font-bold text-3xl ml-2">Movies</h1>
       </div>
@@ -42,11 +42,12 @@ watch(
       class="flex justify-center w-full"
       @submit.prevent="handleSubmit">
       <input
-        class="w-7/12 p-3 pl-5 bg-black text-light-vite outline-none border-s rounded-s-lg placeholder:text-zinc-400"
+        class="w-7/12 p-3 pl-5 bg-black text-brand outline-none border-brand border rounded-s-lg placeholder:text-zinc-400"
         placeholder="Search..."
         :value="keyword"
         @input="handleInput" />
-      <button class="bg-normal-vite px-4 text-zinc-100 border-e rounded-e-lg">
+      <button
+        class="bg-brand px-4 text-zinc-100 border-e rounded-e-lg hover:brightness-95">
         <i class="fa-solid fa-magnifying-glass"></i>
       </button>
     </form>
