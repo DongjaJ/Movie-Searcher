@@ -7,9 +7,6 @@ export default {
       },
       backgroundImage: {
         banner: `url('/images/banner.jpg')`,
-        InternetMovieDatabase: `url('/images/imdb.svg')`,
-        RottenTomatoes: `url('/images/rottenTomato.svg')`,
-        Metacritic: `url('/images/metacritic.svg')`,
       },
     },
   },
