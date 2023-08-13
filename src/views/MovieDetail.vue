@@ -34,6 +34,12 @@ const isFullPlot = ref(false);
 function togglePlot() {
   isFullPlot.value = !isFullPlot.value;
 }
+
+const ImageUrl = {
+  'Internet Movie Database': '/images/imdb.svg',
+  'Rotten Tomatoes': '/images/rottenTomato.svg',
+  Metacritic: '/images/metacritic.svg',
+};
 </script>
 
 <template>
@@ -64,18 +70,17 @@ function togglePlot() {
           :src="
             movieDetail.Poster !== 'N/A'
               ? movieDetail.Poster.replace('SX300', 'SX700')
-              : movieDetail.Poster
+              : '/images/noImage.jpg'
           "
           :alt="movieDetail.Title"
           class="w-full basis-7/12 h-96 rounded-2xl" />
         <section class="flex flex-col gap-2">
           <h3 class="text-3xl font-bold mb-2">Basic Information</h3>
-          <p class="text-2xl font-semibold">Genre</p>
-          <p>
+          <p class="before:content-['Genre'] before:mx-2 before:text-zinc-500">
             {{ movieDetail.Genre }}
           </p>
-          <p class="text-2xl font-semibold">Country</p>
-          <ul class="flex">
+          <ul
+            class="flex before:content-['Country'] before:mx-2 before:text-zinc-500">
             <li
               v-for="country in movieDetail.Country.split(',')"
               :key="country"
@@ -83,47 +88,66 @@ function togglePlot() {
               {{ country }}
             </li>
           </ul>
-          <p>
+          <p
+            class="before:content-['Runtime'] before:mx-2 before:text-zinc-500">
             {{ movieDetail.Runtime }}
           </p>
-          <p>released: {{ movieDetail.Released }}</p>
+          <p
+            class="before:content-['Released'] before:mx-2 before:text-zinc-500">
+            {{ movieDetail.Released }}
+          </p>
+          <p class="before:content-['Rating'] before:mx-2 before:text-zinc-500">
+            {{ movieDetail.imdbRating }}
+          </p>
+          <p
+            class="before:content-['BoxOffice'] before:mx-2 before:text-zinc-500">
+            {{ movieDetail.BoxOffice }}
+          </p>
+          <p class="text-2xl font-semibold">Plot</p>
           <p
             class="pl-2 border-l-4 border-zinc-400"
             :class="isFullPlot ? '' : 'line-clamp-3'">
             {{ movieDetail.Plot }}
           </p>
-          <button
-            v-if="isFullPlot"
-            @click="togglePlot">
-            간략히
-          </button>
-          <button
-            v-else
-            @click="togglePlot">
-            더보기
-          </button>
-          <p>rating: {{ movieDetail.imdbRating }}</p>
-          <p>boxOffice: {{ movieDetail.BoxOffice }}</p>
+          <div class="flex justify-end mr-16">
+            <button
+              v-if="isFullPlot"
+              class="text-blue-400 hover:underline underline-offset-2"
+              @click="togglePlot">
+              summary
+            </button>
+            <button
+              v-else
+              class="text-blue-400 hover:underline underline-offset-2"
+              @click="togglePlot">
+              detail
+            </button>
+          </div>
         </section>
       </div>
       <section class="border-b p-2">
         <h3 class="text-3xl font-bold mb-2">Directing and Appearing</h3>
-        <p>Derectors: {{ movieDetail.Director }}</p>
-        <p>Writers: {{ movieDetail.Writer }}</p>
-        <p>Actors: {{ movieDetail.Actors }}</p>
+        <p
+          class="before:content-['Directors'] before:mx-2 before:text-zinc-500">
+          Derectors: {{ movieDetail.Director }}
+        </p>
+        <p class="before:content-['Writers'] before:mx-2 before:text-zinc-500">
+          Writers: {{ movieDetail.Writer }}
+        </p>
+        <p class="before:content-['Actors'] before:mx-2 before:text-zinc-500">
+          Actors: {{ movieDetail.Actors }}
+        </p>
       </section>
 
-      <section class="p-2">
-        <h3 class="text-3xl font-bold mb-2">Rating</h3>
-        <ul class="flex justify-around">
+      <section class="p-2 text-center">
+        <h3 class="text-3xl font-bold mb-4">Rating</h3>
+        <ul class="flex flex-col md:flex-row justify-around">
           <li
             v-for="rating in movieDetail.Ratings"
-            :key="rating.Source">
-            <div
-              :class="`bg-${rating.Source.split(' ').join('')}`"
-              class="w-24 h-24 bg-cover"></div>
-            <p>{{ rating.Source }}</p>
+            :key="rating.Source"
+            class="">
             <p>{{ rating.Value }}</p>
+            <p class="text-zinc-500">{{ rating.Source }}</p>
           </li>
         </ul>
       </section>
