@@ -21,94 +21,27 @@
         :key="movie.imdbID"
         :movie="movie" />
     </ul>
-    <div class="my-4 flex gap-4 justify-center items-center text-brand">
-      <button
-        class="w-8 h-8 md:w-16 md:h-16 rounded-full border text-sm md:text-2xl hover:bg-brand hover:text-zinc-200"
-        @click="handleClickPrevPage">
-        <i class="fa-solid fa-caret-left"></i>
-      </button>
-      <button
-        v-for="page in currentPages"
-        :key="page"
-        class="w-8 h-8 md:w-16 md:h-16 rounded-full border text-sm md:text-2xl hover:bg-brand hover:text-zinc-200"
-        :class="
-          isCurrentPage(page)
-            ? 'bg-brand text-zinc-200 brightness-90 hover:brightness-100 transition-colors'
-            : ''
-        "
-        @click="handleClickPage(page)">
-        {{ page }}
-      </button>
-      <button
-        class="w-8 h-8 md:w-16 md:h-16 rounded-full border text-sm md:text-2xl hover:bg-brand hover:text-zinc-200"
-        @click="handleClickNextPage">
-        <i class="fa-solid fa-caret-right"></i>
-      </button>
-    </div>
+    <ThePagination :total-pages="totalPages" />
   </div>
 </template>
 
 <script setup lang="ts">
 import MovieCard from '@/components/MovieCard.vue';
 import Loader from '@/components/Loader.vue';
+import ThePagination from '@/components/ThePagination.vue';
 import { useQuery } from '@tanstack/vue-query';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import { reactive, watch, computed } from 'vue';
 import searcher from '@/apis';
 import { IMovieResponse } from '@/interface/movies';
 
 const { movies, isLoading, isError, isFetching } = useMovies();
+const totalPages = computed(getTotalPages);
 
-const route = useRoute();
-const router = useRouter();
-
-function getTotalPageNumber() {
+function getTotalPages() {
   const totalResults = parseInt(movies.value?.totalResults as string);
   return Math.ceil(totalResults / 10);
 }
-
-function handleClickPrevPage() {
-  const currentPage = parseInt(route.params.page as string);
-  if (currentPage === 1) {
-    return;
-  }
-  handleClickPage(currentPage - 1);
-}
-
-function handleClickNextPage() {
-  const currentPage = parseInt(route.params.page as string);
-  if (currentPage < getTotalPageNumber()) {
-    handleClickPage(currentPage + 1);
-  }
-}
-
-function handleClickPage(page: number) {
-  const currentPage = parseInt(route.params.page as string);
-  if (currentPage === page) return;
-  router.push({
-    name: '',
-    params: {
-      keyword: route.params.keyword,
-      page,
-    },
-  });
-}
-
-function isCurrentPage(page: number) {
-  const currentPage = parseInt(route.params.page as string);
-  return currentPage === page;
-}
-
-const currentPages = computed(() => {
-  const currentPage = parseInt(route.params.page as string);
-  const start = Math.floor((currentPage - 1) / 5) * 5 + 1;
-  const end = Math.min(start + 4, getTotalPageNumber());
-  const pages = Array.from(
-    { length: end - start + 1 },
-    (_, index) => start + index,
-  );
-  return pages;
-});
 
 function useMovies() {
   const route = useRoute();
