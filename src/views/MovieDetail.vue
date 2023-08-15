@@ -2,8 +2,8 @@
 import { useQuery } from '@tanstack/vue-query';
 import { useRoute } from 'vue-router';
 import { ref, watch } from 'vue';
-import searcher from '../apis';
-import Loader from '../components/Loader.vue';
+import searcher from '@/apis';
+import Loader from '@/components/Loader.vue';
 import { IMovieDetailResponse } from '@/interface/movieDetail';
 
 function useMovieDetail() {

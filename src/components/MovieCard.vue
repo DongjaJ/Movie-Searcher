@@ -1,16 +1,8 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
+import { IMovie } from '@/interface/movies';
 
-interface Movie {
-  Title: string;
-  Year: string;
-  imdbID: string;
-  Type: string;
-  Poster: string;
-}
-
-const props = defineProps<{ movie: Movie }>();
-
+const props = defineProps<{ movie: IMovie }>();
 const router = useRouter();
 
 function handleClick() {

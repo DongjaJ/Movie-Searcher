@@ -49,12 +49,12 @@
 </template>
 
 <script setup lang="ts">
-import MovieCard from '../components/MovieCard.vue';
-import Loader from '../components/Loader.vue';
+import MovieCard from '@/components/MovieCard.vue';
+import Loader from '@/components/Loader.vue';
 import { useQuery } from '@tanstack/vue-query';
 import { useRoute, useRouter } from 'vue-router';
 import { reactive, watch, computed } from 'vue';
-import searcher from '../apis';
+import searcher from '@/apis';
 import { IMovieResponse } from '@/interface/movies';
 
 const { movies, isLoading, isError, isFetching } = useMovies();
