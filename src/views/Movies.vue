@@ -134,6 +134,7 @@ function useMovies() {
       params.page = newParams.page;
       refetch();
     },
+    { immediate: true },
   );
 
   return { movies, isLoading, isError, isFetching };

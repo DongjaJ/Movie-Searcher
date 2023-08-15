@@ -1,15 +1,28 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query';
 import { useRoute } from 'vue-router';
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import searcher from '@/apis';
 import Loader from '@/components/Loader.vue';
 import { IMovieDetailResponse } from '@/interface/movieDetail';
+import { getImageUrl } from '@/utils';
+
+const { movieDetail, isLoading, isError, isFetching } = useMovieDetail();
+const isFullPlot = ref(false);
+
+const countries = computed(() => movieDetail.value?.Country.split(','));
+
+function togglePlot() {
+  isFullPlot.value = !isFullPlot.value;
+}
+
+function getLineClamp() {
+  return isFullPlot.value ? '' : 'line-clamp-3';
+}
 
 function useMovieDetail() {
   const route = useRoute();
-  const { movieId } = route.params;
-  const movieIdRef = ref(movieId);
+  const movieIdRef = ref(route.params.movieId);
   const { data, isLoading, isError, isFetching, refetch } =
     useQuery<IMovieDetailResponse>(['movieDetail', movieIdRef.value], () =>
       searcher.getMovieDetail({ movieId: movieIdRef.value as string }),
@@ -25,14 +38,6 @@ function useMovieDetail() {
   );
 
   return { movieDetail: data, isLoading, isError, isFetching };
-}
-
-const { movieDetail, isLoading, isError, isFetching } = useMovieDetail();
-
-const isFullPlot = ref(false);
-
-function togglePlot() {
-  isFullPlot.value = !isFullPlot.value;
 }
 </script>
 
@@ -61,11 +66,7 @@ function togglePlot() {
     <section class="bg-zinc-100 text-black my-2 rounded-2xl p-4">
       <div class="flex flex-col md:flex-row gap-4 overflow-hidden border-b p-2">
         <img
-          :src="
-            movieDetail.Poster !== 'N/A'
-              ? movieDetail.Poster.replace('SX300', 'SX700')
-              : '/images/noImage.jpg'
-          "
+          :src="getImageUrl(movieDetail.Poster)"
           :alt="movieDetail.Title"
           class="w-full basis-7/12 h-96 rounded-2xl" />
         <section class="flex flex-col gap-2">
@@ -76,7 +77,7 @@ function togglePlot() {
           <ul
             class="flex before:content-['Country'] before:mx-2 before:text-zinc-500">
             <li
-              v-for="country in movieDetail.Country.split(',')"
+              v-for="country in countries"
               :key="country"
               class="after:content-['·'] after:mx-2 after:text-zinc-500 last:after:content=['']">
               {{ country }}
@@ -100,7 +101,7 @@ function togglePlot() {
           <p class="text-2xl font-semibold">Plot</p>
           <p
             class="pl-2 border-l-4 border-zinc-400"
-            :class="isFullPlot ? '' : 'line-clamp-3'">
+            :class="getLineClamp()">
             {{ movieDetail.Plot }}
           </p>
           <div class="flex justify-end mr-16">
