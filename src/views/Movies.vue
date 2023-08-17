@@ -16,31 +16,40 @@
     </h3>
     <ul
       class="grid grid-col-1 p-2 gap-4 gap-y-6 sm:grid-col-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
-      <MovieCard
+      <Card
         v-for="movie in movies?.Search"
         :key="movie.imdbID"
-        :movie="movie" />
+        :src="movie.Poster"
+        :title="movie.Title"
+        :year="movie.Year"
+        :type="movie.Type"
+        @click="handleClickCard(movie.imdbID)" />
     </ul>
     <ThePagination :total-pages="totalPages" />
   </div>
 </template>
 
 <script setup lang="ts">
-import MovieCard from '@/components/MovieCard.vue';
+import Card from '@/components/Card.vue';
 import Loader from '@/components/Loader.vue';
 import ThePagination from '@/components/ThePagination.vue';
 import { useQuery } from '@tanstack/vue-query';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { reactive, watch, computed } from 'vue';
 import searcher from '@/apis';
 import { IMovieResponse } from '@/interface/movies';
 
 const { movies, isLoading, isError, isFetching } = useMovies();
 const totalPages = computed(getTotalPages);
+const router = useRouter();
 
 function getTotalPages() {
   const totalResults = parseInt(movies.value?.totalResults as string);
   return Math.ceil(totalResults / 10);
+}
+
+function handleClickCard(imdbID: string) {
+  router.push({ name: 'MovieDetail', params: { movieId: imdbID } });
 }
 
 function useMovies() {

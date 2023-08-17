@@ -9,13 +9,13 @@ interface IgetMovieDetail {
   ({ movieId }: { movieId: string }): Promise<IMovieDetailResponse>;
 }
 
-interface apiClient {
+interface ApiClient {
   getMovies: IgetMovies;
   getMovieDetail: IgetMovieDetail;
 }
 
 export default class Movie {
-  constructor(private apiClient: apiClient) {}
+  constructor(private apiClient: ApiClient) {}
 
   async search({ keyword, page }: SearchParams) {
     return this.apiClient.getMovies({ keyword, page });

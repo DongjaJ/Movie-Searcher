@@ -1,15 +1,21 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
-import movieClient from './index.js';
+import movieClient, { httpStatus } from './index.js';
+
+interface MovieRequest extends VercelRequest {
+  query: {
+    keyword: string;
+    page: string;
+  };
+}
 
 export default async function (
-  request: VercelRequest,
+  request: MovieRequest,
   response: VercelResponse,
 ) {
   try {
-    const keyword = request.query.keyword as string;
-    const page = parseInt(request.query.page as string);
-    const data = await movieClient.getMovies({ keyword, page });
-    response.status(200).json(data);
+    const { keyword, page } = request.query;
+    const data = await movieClient.getMovies({ keyword, page: parseInt(page) });
+    response.status(httpStatus.OK).json(data);
   } catch (error) {
     console.error(error);
   }

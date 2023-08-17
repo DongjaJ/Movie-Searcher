@@ -1,14 +1,21 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
-import movieClient from './index.js';
+import movieClient, { httpStatus } from './index.js';
+
+interface MovieDetailRequest extends VercelRequest {
+  query: {
+    movieId: string;
+  };
+}
 
 export default async function (
-  request: VercelRequest,
+  request: MovieDetailRequest,
   response: VercelResponse,
 ) {
   try {
-    const movieId = request.query.movieId as string;
-    const data = await movieClient.getMovieDetail({ movieId });
-    response.status(200).json(data);
+    const data = await movieClient.getMovieDetail({
+      movieId: request.query.movieId,
+    });
+    response.status(httpStatus.OK).json(data);
   } catch (error) {
     console.error(error);
   }

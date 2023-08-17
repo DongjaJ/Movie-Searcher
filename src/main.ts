@@ -4,9 +4,12 @@ import App from './App.vue';
 import router from './router/index';
 import { VueQueryPlugin, VueQueryPluginOptions } from '@tanstack/vue-query';
 
+const [MILLISECOND, SECOND, MINUTE] = [1000, 60, 10];
+const STALE_TIME = MILLISECOND * SECOND * MINUTE;
+
 const vueQueryPluginOptions: VueQueryPluginOptions = {
   queryClientConfig: {
-    defaultOptions: { queries: { staleTime: 1000 * 60 * 10 } },
+    defaultOptions: { queries: { staleTime: STALE_TIME } },
   },
 };
 
