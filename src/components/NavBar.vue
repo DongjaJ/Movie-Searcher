@@ -4,16 +4,24 @@ import { useRoute, useRouter } from 'vue-router';
 
 const router = useRouter();
 const route = useRoute();
-const keyword = ref(route.params.keyword ?? '');
+const keyword = ref<string | string[]>(route.params.keyword);
 
 function handleSubmit(): void {
-  const trimedKeyword = (keyword.value as string).trim();
+  if (typeof keyword.value !== 'string') {
+    throw new Error('keyword is not string');
+  }
+
+  const trimedKeyword = keyword.value.trim();
   const isEmptyKeyword = trimedKeyword.length === 0;
   if (isEmptyKeyword) {
     return;
   }
 
-  router.push({ name: 'Movies', params: { keyword: trimedKeyword, page: 1 } });
+  const firstPage = 1;
+  router.push({
+    name: 'Movies',
+    params: { keyword: trimedKeyword, page: firstPage },
+  });
 }
 
 function handleInput(event: Event): void {
