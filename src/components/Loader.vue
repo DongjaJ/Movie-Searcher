@@ -12,7 +12,6 @@
 }
 .loader {
   font-size: 11px;
-  text-indent: -99999em;
   margin: 250px auto;
   position: relative;
   width: 10em;

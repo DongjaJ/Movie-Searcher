@@ -33,11 +33,9 @@
 import Card from '@/components/Card.vue';
 import Loader from '@/components/Loader.vue';
 import ThePagination from '@/components/ThePagination.vue';
-import { useQuery } from '@tanstack/vue-query';
-import { useRoute, useRouter } from 'vue-router';
-import { reactive, watch, computed } from 'vue';
-import searcher from '@/apis';
-import { IMovieResponse } from '@/interface/movies';
+import { useRouter } from 'vue-router';
+import { computed } from 'vue';
+import useMovies from '@/hooks/useMovies';
 
 const { movies, isLoading, isError, isFetching } = useMovies();
 const totalPages = computed(getTotalPages);
@@ -50,35 +48,5 @@ function getTotalPages() {
 
 function handleClickCard(imdbID: string) {
   router.push({ name: 'MovieDetail', params: { movieId: imdbID } });
-}
-
-function useMovies() {
-  const route = useRoute();
-  const params = reactive(route.params);
-  const queryKey = reactive(['movies', params.keyword, params.page]);
-  const {
-    data: movies,
-    isLoading,
-    isError,
-    isFetching,
-    refetch,
-  } = useQuery<IMovieResponse>(queryKey, () =>
-    searcher.search({
-      keyword: params.keyword as string,
-      page: parseInt(params.page as string),
-    }),
-  );
-
-  watch(
-    () => route.params,
-    (newParams) => {
-      params.keyword = newParams.keyword;
-      params.page = newParams.page;
-      refetch();
-    },
-    { immediate: true },
-  );
-
-  return { movies, isLoading, isError, isFetching };
 }
 </script>

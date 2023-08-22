@@ -1,11 +1,8 @@
 <script setup lang="ts">
-import { useQuery } from '@tanstack/vue-query';
-import { useRoute } from 'vue-router';
-import { computed, ref, watch } from 'vue';
-import searcher from '@/apis';
+import { computed, ref } from 'vue';
 import Loader from '@/components/Loader.vue';
-import { IMovieDetailResponse } from '@/interface/movieDetail';
 import { getImageUrl } from '@/utils';
+import useMovieDetail from '@/hooks/useMovieDetail';
 
 const { movieDetail, isLoading, isError, isFetching } = useMovieDetail();
 const isFullPlot = ref(false);
@@ -18,26 +15,6 @@ function togglePlot() {
 
 function getLineClamp() {
   return isFullPlot.value ? '' : 'line-clamp-3';
-}
-
-function useMovieDetail() {
-  const route = useRoute();
-  const movieIdRef = ref(route.params.movieId);
-  const { data, isLoading, isError, isFetching, refetch } =
-    useQuery<IMovieDetailResponse>(['movieDetail', movieIdRef.value], () =>
-      searcher.getMovieDetail({ movieId: movieIdRef.value as string }),
-    );
-
-  watch(
-    () => route.params.movieId,
-    (movieId) => {
-      movieIdRef.value = movieId;
-      refetch();
-    },
-    { immediate: true },
-  );
-
-  return { movieDetail: data, isLoading, isError, isFetching };
 }
 </script>
 
